@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABCTests", "ABCTests\ABCTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XYZ", "XYZ\XYZ.csproj", "{86FED351-978C-457D-8DC5-8A256CF8FF85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShinyXYZ", "ShinyXYZ\ShinyXYZ.csproj", "{B9B0182B-DB1B-4BBB-B3AF-85C4222E7FF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShinyXYZ", "ShinyXYZ\ShinyXYZ.csproj", "{B9B0182B-DB1B-4BBB-B3AF-85C4222E7FF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XYZv2", "XYZv2\XYZv2.csproj", "{6FB398D0-82BF-47EA-8F50-33774BA5FC5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XYZv2", "XYZv2\XYZv2.csproj", "{6FB398D0-82BF-47EA-8F50-33774BA5FC5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OthripleS", "OthripleS\OthripleS.csproj", "{67A0C18D-5898-4590-BB60-DD3DDD002B0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{6FB398D0-82BF-47EA-8F50-33774BA5FC5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FB398D0-82BF-47EA-8F50-33774BA5FC5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FB398D0-82BF-47EA-8F50-33774BA5FC5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67A0C18D-5898-4590-BB60-DD3DDD002B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67A0C18D-5898-4590-BB60-DD3DDD002B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67A0C18D-5898-4590-BB60-DD3DDD002B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67A0C18D-5898-4590-BB60-DD3DDD002B0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

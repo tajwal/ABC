@@ -1,4 +1,6 @@
-﻿namespace XYZv2.Models
+﻿using System;
+
+namespace XYZv2.Models
 {
     public class Notificationv2
     {

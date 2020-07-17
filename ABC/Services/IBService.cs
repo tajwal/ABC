@@ -1,9 +1,9 @@
-﻿using XYZ.Models;
+﻿using ABC.Models;
 
 namespace ABC.Services
 {
     public interface IBService
     {
-        void DoStuffB(Notification notification);
+        void DoStuffB(ABCNotification notification);
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ABC.Models
 {
-    public class ACBNotification
+    public class ABCNotification
     {
         public Guid Id { get; set; }
     }

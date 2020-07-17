@@ -1,10 +1,12 @@
 ﻿using ABC.Brokers;
+using ABC.Models;
 using ABC.Services;
 using Moq;
 using Tynamix.ObjectFiller;
 using Xunit;
 using XYZ;
 using XYZ.Models;
+using XYZv2;
 
 namespace ABCTests.Services
 {
@@ -14,11 +16,11 @@ namespace ABCTests.Services
         public void ShouldCallXyzBroker()
         {
             //given
-            var xyzBrokerMock = new Mock<IXYZBroker>();
-            Notification notification = new Filler<Notification>().Create();
+            var xyzBrokerMock = new Mock<IXYZService>();
+            ABCNotification notification = new Filler<ABCNotification>().Create();
             
-            NotificationResponse notificationResponse = 
-                new Filler<NotificationResponse>().Create();
+            ABCNotificationResponse notificationResponse = 
+                new Filler<ABCNotificationResponse>().Create();
 
             xyzBrokerMock.Setup(x => x.SendNotification(notification))
                 .Returns(notificationResponse);

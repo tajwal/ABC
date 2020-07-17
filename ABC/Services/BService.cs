@@ -1,19 +1,21 @@
 ﻿using ABC.Brokers;
+using ABC.Models;
 using System;
 using XYZ.Models;
+using XYZv2.Models;
 
 namespace ABC.Services
 {
     public class BService : IBService
     {
-        private readonly IXYZBroker xYZBroker;
-        public BService(IXYZBroker xYZBroker)
+        private readonly IXYZService xYZService;
+        public BService(IXYZService xYZService)
         {
-            this.xYZBroker = xYZBroker;
+            this.xYZService = xYZService;
         }
-        public void DoStuffB(Notification notification)
+        public void DoStuffB(ABCNotification notification)
         {
-            this.xYZBroker.SendNotification(notification);
+            this.xYZService.SendNotification(notification);
         }
     }
 }

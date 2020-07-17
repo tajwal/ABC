@@ -4,6 +4,6 @@ namespace ABC.Services
 {
     public interface IXYZService
     {
-        ACBNotification SendNotification(ACBNotification notificatoin);
+        ABCNotificationResponse SendNotification(ABCNotification notificatoin);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using ABC.Brokers;
 using ABC.Models;
 using System;
+using XYZv2;
+using XYZv2.Models;
 
 namespace ABC.Services
 {
@@ -11,9 +13,31 @@ namespace ABC.Services
         {
             this.xYZBroker = xYZBroker;
         }
-        public ACBNotification SendNotification(ACBNotification notificatoin)
+        public ABCNotificationResponse SendNotification(ABCNotification notificatoin)
         {
-            throw new NotImplementedException();
+            var notificationv2 = MapTOXYZNotification(notificatoin);
+            var notificationResponse = xYZBroker.SendNotification(notificationv2);
+
+            return MapToABCNotificationResponse(notificationResponse);
+
+        }
+
+        private ABCNotificationResponse MapToABCNotificationResponse(
+            NotificationResponsev2 notificationResponsev2)
+        {
+            return new ABCNotificationResponse()
+            {
+                Id = notificationResponsev2.Id
+            };
+        }
+
+        private Notificationv2 MapTOXYZNotification(
+            ABCNotification notificationResponse)
+        {
+            return new Notificationv2()
+            {
+                Id = notificationResponse.Id 
+            };
         }
     }
 }

@@ -2,10 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>OtripleS.Web.Api</AssemblyName>
+    <RootNamespace>OtripleS.Web.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <Compile Remove="Services\Courses\CourseService.Exception.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Services\Courses\CourseService.Exception.cs" />
   </ItemGroup>
 
   <ItemGroup>

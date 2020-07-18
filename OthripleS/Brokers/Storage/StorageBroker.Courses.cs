@@ -1,0 +1,46 @@
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using OthripleS.Models.Courses;
+
+namespace OtripleS.Web.Api.Brokers.Storage
+{
+    public partial class StorageBroker
+    {
+        public DbSet<Course> Courses { get; set; }
+
+        public async ValueTask<Course> InsertCourseAsync(Course course)
+        {
+            EntityEntry<Course> entityEntry = await this.Courses.AddAsync(course);
+            await this.SaveChangesAsync();
+
+            return entityEntry.Entity;
+        }
+
+        public IQueryable<Course> SelectAllCourses() => this.Courses.AsQueryable();
+
+        public async ValueTask<Course> SelectCourseByIdAsync(Guid courseId)
+        {
+            this.ChangeTracker.QueryTrackingBehavior = new QueryTrackingBehavior();
+            return await Courses.FindAsync(courseId);
+        }
+
+        public async ValueTask<Course> UpdateCourseByIdAsync(Course course)
+        {
+            EntityEntry<Course> entityEntry =  this.Courses.Update(course);
+            await this.SaveChangesAsync();
+
+            return entityEntry.Entity;
+        }
+
+        public async ValueTask<Course> DeleteCourseAsync(Course course)
+        {
+            EntityEntry<Course> courseEntityEntry = this.Courses.Remove(course);
+            await this.SaveChangesAsync();
+
+            return courseEntityEntry.Entity;
+        }
+    }
+}

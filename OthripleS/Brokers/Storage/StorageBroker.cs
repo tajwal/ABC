@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace OthripleS.Brokers.Storage
+namespace OtripleS.Web.Api.Brokers.Storage
 {
     public partial class StorageBroker : EFxceptionsContext, IStorageBroker
     {

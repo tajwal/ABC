@@ -1,6 +1,6 @@
-﻿namespace OthripleS.Brokers.Storage
+﻿namespace OtripleS.Web.Api.Brokers.Storage
 {
-    public partial class StorageBroker : IStorageBroker
+    public partial class StorageBroker
     {
     }
 }

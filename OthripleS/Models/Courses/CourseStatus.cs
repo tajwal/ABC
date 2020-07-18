@@ -1,8 +1,9 @@
-﻿namespace OthripleS.Models.Courses
+﻿namespace OtripleS.Web.Api.Models.Courses
 {
     public enum CourseStatus
-	{
-		Available,
-		Unavailable
-	}
+    {
+        Active,
+        Suspended,
+        Inactive
+    }
 }

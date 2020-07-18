@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OthripleS.Models;
+using OtripleS.Web.Api.Models.Students;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {

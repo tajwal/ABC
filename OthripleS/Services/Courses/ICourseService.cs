@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OthripleS.Models.Courses;
+using OtripleS.Web.Api.Models.Courses;
 
 namespace OtripleS.Web.Api.Services.Courses
 {
@@ -10,6 +10,7 @@ namespace OtripleS.Web.Api.Services.Courses
         IQueryable<Course> RetrieveAllCourses();
         ValueTask<Course> RetrieveCourseById(Guid courseId);
         ValueTask<Course> ModifyCourseAsync(Course course);
+        ValueTask<Course> CreateCourseAsync(Course course);
         ValueTask<Course> DeleteCourseAsync(Guid CourseId);
     }
 }

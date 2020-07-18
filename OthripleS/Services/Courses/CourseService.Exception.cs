@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace OtripleS.Web.Api.Services.Courses
 {
-    public class CourseService
+    public partial class CourseService
     {
         private delegate ValueTask<Course> ReturningCourseFunction();
         private delegate IQueryable<Course> ReturningQueryableCourseFunction();

@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace OthripleS.Models.Courses.Exceptions
+namespace OtripleS.Web.Api.Models.Courses.Exceptions
 {
-    public class NulCourseException:Exception
+    public class NulCourseException : Exception
     {
-        public NulCourseException():base("The course is null.")
+        public NulCourseException() : base("The course is null.")
         {
 
         }

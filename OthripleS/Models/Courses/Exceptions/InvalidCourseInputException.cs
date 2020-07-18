@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace OthripleS.Models.Courses.Exceptions
+namespace OtripleS.Web.Api.Models.Courses.Exceptions
 {
-    public class InvalidCourseInputException:Exception
+    public class InvalidCourseInputException : Exception
     {
         public InvalidCourseInputException(string parameterName, object parameterValue)
             : base($"Invalid Course, " +

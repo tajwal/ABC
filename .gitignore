@@ -338,3 +338,4 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/OthripleS/Brokers/Storage/StorageBroker.Teachers.cs

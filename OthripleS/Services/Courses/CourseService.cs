@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using OthripleS.Models.Courses;
 using OtripleS.Web.Api.Brokers.DateTimes;
 using OtripleS.Web.Api.Brokers.Loggings;
 using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Models.Courses;
 
 namespace OtripleS.Web.Api.Services.Courses
 {
-    public class CourseService : ICourseService
+    public partial class CourseService : ICourseService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -23,6 +23,16 @@ namespace OtripleS.Web.Api.Services.Courses
             this.loggingBroker = loggingBroker;
             this.dateTimeBroker = dateTimeBroker;
         }
+
+        public ValueTask<Course> CreateCourseAsync(Course course) =>
+        TryCatch(async () =>
+        {
+            ValidateCourseOnCreate(teacher);
+
+            return await this.storageBroker.InsertCourseAsync(teacher);
+        });
+
+
         public ValueTask<Course> DeleteCourseAsync(Guid CourseId)
         {
             throw new NotImplementedException();

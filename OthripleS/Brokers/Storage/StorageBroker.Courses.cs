@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using OthripleS.Models.Courses;
+using OtripleS.Web.Api.Models.Courses;
 
 namespace OtripleS.Web.Api.Brokers.Storage
 {
@@ -27,9 +27,9 @@ namespace OtripleS.Web.Api.Brokers.Storage
             return await Courses.FindAsync(courseId);
         }
 
-        public async ValueTask<Course> UpdateCourseByIdAsync(Course course)
+        public async ValueTask<Course> UpdateCourseAsync(Course course)
         {
-            EntityEntry<Course> entityEntry =  this.Courses.Update(course);
+            EntityEntry<Course> entityEntry = this.Courses.Update(course);
             await this.SaveChangesAsync();
 
             return entityEntry.Entity;

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace OthripleS.Models.Courses
+namespace OtripleS.Web.Api.Models.Courses
 {
-    public class Course:IAuditable
+    public class Course : IAuditable
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

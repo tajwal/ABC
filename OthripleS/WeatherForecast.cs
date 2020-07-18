@@ -1,6 +1,6 @@
 using System;
 
-namespace OthripleS
+namespace OtripleS
 {
     public class WeatherForecast
     {

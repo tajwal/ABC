@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using OthripleS.Models.Courses;
-using OthripleS.Models.Courses.Exceptions;
+using OtripleS.Web.Api.Models.Courses;
+using OtripleS.Web.Api.Models.Courses.Exceptions;
 
 namespace OtripleS.Web.Api.Services.Courses
 {
@@ -150,6 +150,7 @@ namespace OtripleS.Web.Api.Services.Courses
         }
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
+        
         private static bool IsInvalid(Guid input) => input == default;
     }
 }

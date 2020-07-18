@@ -5,14 +5,12 @@
 
 using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Force.DeepCloner;
 using Moq;
 using OtripleS.Web.Api.Models.Teachers;
 using Xunit;
-using Force.DeepCloner;
 
 namespace OtripleS.Web.Api.Tests.Unit.Services.TeacherServiceTests
 {

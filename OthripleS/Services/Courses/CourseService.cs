@@ -24,13 +24,17 @@ namespace OtripleS.Web.Api.Services.Courses
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<Course> CreateCourseAsync(Course course) =>
-        TryCatch(async () =>
+        public ValueTask<Course> CreateCourseAsync(Course course)
         {
-            ValidateCourseOnCreate(teacher);
+            return this.storageBroker.InsertCourseAsync(course);
 
-            return await this.storageBroker.InsertCourseAsync(teacher);
-        });
+        }
+        //TryCatch(async () =>
+        //{
+        //    ValidateCourseOnCreate(course);
+
+        //    return await this.storageBroker.InsertCourseAsync(course);
+        //});
 
 
         public ValueTask<Course> DeleteCourseAsync(Guid CourseId)

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using OtripleS.Web.Api.Models.Courses;
 using OtripleS.Web.Api.Tests.Acceptance.Brokers;
@@ -18,27 +19,26 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
         }
 
         private Course CreateRandumCourse() =>
-            new Filler<Course>().Create();
+            CreateRandumCourseFiller().Create();
 
-        [Fact]
-        public async Task ShouldPostCourseAsync()
+        private static DateTimeOffset GetRandomDateTime() =>
+            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+
+        private Filler<Course> CreateRandumCourseFiller()
         {
-            // given
-            Course randomCourse = CreateRandumCourse();
-            Course inputCourse = randomCourse;
-            Course expectedCourse = inputCourse;
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            Guid posterId = Guid.NewGuid();
 
-            // when 
-            await this.courseBroker.PostCourseAsync(inputCourse);
+            var filler = new Filler<Course>();
 
-            Course actualStudent =
-                await this.courseBroker.GetCourseByIdAsync(inputCourse.Id);
+            filler.Setup()
+                .OnProperty(course => course.CreatedBy).Use(posterId)
+                .OnProperty(course => course.UpdatedBy).Use(posterId)
+                .OnProperty(course => course.CreatedDate).Use(now)
+                .OnProperty(course => course.UpdatedDate).Use(now)
+                .OnType<DateTimeOffset>().Use(GetRandomDateTime());
 
-            // then
-            actualStudent.Should().BeEquivalentTo(expectedCourse);
-
-            await this.courseBroker.DeleteStudentByIdAsync(actualStudent.Id);
+            return filler;
         }
-
     }
 }

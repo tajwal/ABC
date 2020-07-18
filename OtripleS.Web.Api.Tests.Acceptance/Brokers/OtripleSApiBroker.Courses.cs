@@ -7,7 +7,7 @@ namespace OtripleS.Web.Api.Tests.Acceptance.Brokers
 {
     public partial class OtripleSApiBroker
     {
-        private const string CoursesRelativeUrl = "api/courses";
+        private const string CoursesRelativeUrl = "api/Courses";
 
         public async ValueTask<Course> PostCourseAsync(Course course) =>
             await this.apiFactoryClient.PostContentAsync(CoursesRelativeUrl, course);

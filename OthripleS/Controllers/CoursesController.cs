@@ -19,9 +19,62 @@ namespace OtripleS.Web.Api.Controllers
         public CoursesController(ICourseService courseService) =>
             this.courseService = courseService;
 
-        // GET: api/<CoursesController>
+        [HttpPost]
+        public async ValueTask<ActionResult<Course>> PostCourseAsync(
+            [FromBody] Course course)
+        {
+            try
+            {
+                Course persistedCourse =
+                    await this.courseService.CreateCourseAsync(course);
+
+                return Ok(persistedCourse);
+            }
+            catch (CourseValidationException courseValidationException)
+                when (courseValidationException.InnerException is AlreadyExistsCourseException)
+            {
+                string innerMessage = GetInnerMessage(courseValidationException);
+
+                return Conflict(innerMessage);
+            }
+            catch (CourseValidationException courseValidationException)
+            {
+                string innerMessage = GetInnerMessage(courseValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (CourseDependencyException courseDependencyException)
+            {
+                return Problem(courseDependencyException.Message);
+            }
+            catch (CourseServiceException couServiceException)
+            {
+                return Problem(couServiceException.Message);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<IQueryable<Course>> GetAllCourses()
+        {
+            try
+            {
+                IQueryable<Course> courses =
+                    this.courseService.RetrieveAllCourses();
+
+                return Ok(courses);
+            }
+            catch (CourseDependencyException courseDependencyException)
+            {
+                return Problem(courseDependencyException.Message);
+            }
+            catch (CourseServiceException courseServiceException)
+            {
+                return Problem(courseServiceException.Message);
+            }
+        }
+
         [HttpGet("{CourseId}")]
-        public async ValueTask<ActionResult<Course>> GetById(Guid CourseId)
+        public async ValueTask<ActionResult<Course>> GetCourseAsync(Guid CourseId)
         {
             try
             {
@@ -48,15 +101,35 @@ namespace OtripleS.Web.Api.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult<IQueryable<Course>> GetAllCourses()
+        [HttpPut]
+        public async ValueTask<ActionResult<Course>> PutCourseAsync(Course course)
         {
             try
             {
-                IQueryable<Course> courses =
-                    this.courseService.RetrieveAllCourses();
+                Course updatedCourse =
+                    await this.courseService.ModifyCourseAsync(course);
 
-                return Ok(courses);
+                return Ok(updatedCourse);
+            }
+            catch (CourseValidationException courseValidationException)
+                when (courseValidationException.InnerException is NotFoundCourseException)
+            {
+                string innerMessage = GetInnerMessage(courseValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (CourseValidationException courseValidationException)
+            {
+                string innerMessage = GetInnerMessage(courseValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (CourseDependencyException courseDependencyException)
+                when (courseDependencyException.InnerException is LockedCourseException)
+            {
+                string innerMessage = GetInnerMessage(courseDependencyException);
+
+                return Locked(innerMessage);
             }
             catch (CourseDependencyException courseDependencyException)
             {
@@ -99,82 +172,8 @@ namespace OtripleS.Web.Api.Controllers
             {
                 return Problem(courseServiceException.Message);
             }
-        }
-
-        [HttpPost]
-        public async ValueTask<ActionResult<Course>> PostCourseAsync(
-            [FromBody] Course course)
-        {
-            try
-            {
-                Course persistedCourse =
-                    await this.courseService.CreateCourseAsync(course);
-
-                return Ok(persistedCourse);
-            }
-            catch (CourseValidationException courseValidationException)
-                when (courseValidationException.InnerException is AlreadyExistsCourseException)
-            {
-                string innerMessage = GetInnerMessage(courseValidationException);
-
-                return Conflict(innerMessage);
-            }
-            catch (CourseValidationException courseValidationException)
-            {
-                string innerMessage = GetInnerMessage(courseValidationException);
-
-                return BadRequest(innerMessage);
-            }
-            catch (CourseDependencyException courseDependencyException)
-            {
-                return Problem(courseDependencyException.Message);
-            }
-            catch (CourseServiceException couServiceException)
-            {
-                return Problem(couServiceException.Message);
-            }
-        }
-
-        [HttpPut]
-        public async ValueTask<ActionResult<Course>> PutTeacher(Course course)
-        {
-            try
-            {
-                Course updatedCourse =
-                    await this.courseService.ModifyCourseAsync(course);
-
-                return Ok(updatedCourse);
-            }
-            catch (CourseValidationException courseValidationException)
-                when (courseValidationException.InnerException is NotFoundCourseException)
-            {
-                string innerMessage = GetInnerMessage(courseValidationException);
-
-                return NotFound(innerMessage);
-            }
-            catch (CourseValidationException courseValidationException)
-            {
-                string innerMessage = GetInnerMessage(courseValidationException);
-
-                return BadRequest(innerMessage);
-            }
-            catch (CourseDependencyException courseDependencyException)
-                when (courseDependencyException.InnerException is LockedCourseException)
-            {
-                string innerMessage = GetInnerMessage(courseDependencyException);
-
-                return Locked(innerMessage);
-            }
-            catch (CourseDependencyException courseDependencyException)
-            {
-                return Problem(courseDependencyException.Message);
-            }
-            catch (CourseServiceException courseServiceException)
-            {
-                return Problem(courseServiceException.Message);
-            }
-        }
-
+        }      
+        
         public static string GetInnerMessage(Exception exception) =>
             exception.InnerException.Message;
     }

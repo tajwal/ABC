@@ -37,9 +37,16 @@ namespace OtripleS.Web.Api.Services.Courses
         //});
 
 
-        public ValueTask<Course> DeleteCourseAsync(Guid CourseId)
+        public async ValueTask<Course> DeleteCourseAsync(Guid courseId)
         {
-            throw new NotImplementedException();
+            ValidateCourseId(courseId);
+
+            Course maybeCourse =
+               await this.storageBroker.SelectCourseByIdAsync(courseId);
+
+            ValidateStorageCourse(maybeCourse, courseId);
+
+            return await this.storageBroker.DeleteCourseAsync(maybeCourse);
         }
 
         public async ValueTask<Course> ModifyCourseAsync(Course course)
@@ -54,12 +61,32 @@ namespace OtripleS.Web.Api.Services.Courses
 
         public IQueryable<Course> RetrieveAllCourses()
         {
-            throw new NotImplementedException();
-        }
+            IQueryable<Course> storageCourses = this.storageBroker.SelectAllCourses();
+            ValidateStorageCourses(storageCourses);
 
-        public ValueTask<Course> RetrieveCourseById(Guid courseId)
-        {
-            throw new NotImplementedException();
+            return storageCourses;
         }
+        //TryCatch(() =>
+        //{
+        //    IQueryable<Course> storageCourses = this.storageBroker.SelectAllCourses();
+        //    ValidateStorageCourses(storageCourses);
+
+        //    return storageCourses;
+        //});
+
+        public async ValueTask<Course> RetrieveCourseById(Guid courseId)
+        {
+            Course storageCourse = await this.storageBroker.SelectCourseByIdAsync(courseId);
+            ValidateStorageCourse(storageCourse, courseId);
+
+            return storageCourse;
+        }
+        //TryCatch(async () =>
+        //{
+        //    Course storageCourse = await this.storageBroker.SelectCourseByIdAsync(courseId);
+        //    ValidateStorageCourse(storageCourse, courseId);
+
+        //    return storageCourse;
+        //});
     }
 }

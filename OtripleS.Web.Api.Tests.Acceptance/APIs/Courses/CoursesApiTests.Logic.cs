@@ -18,13 +18,13 @@ namespace OtripleS.Web.Api.Tests.Acceptance.APIs.Courses
             // when 
             await this.courseBroker.PostCourseAsync(inputCourse);
 
-            Course actualStudent =
+            Course actualCourse =
                 await this.courseBroker.GetCourseByIdAsync(inputCourse.Id);
 
             // then
-            actualStudent.Should().BeEquivalentTo(expectedCourse);
+            actualCourse.Should().BeEquivalentTo(expectedCourse);
 
-            await this.courseBroker.DeleteStudentByIdAsync(actualStudent.Id);
+            await this.courseBroker.DeleteCourseByIdAsync(actualCourse.Id);
         }
 
     }

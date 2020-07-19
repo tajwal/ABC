@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using OtripleS.Web.Api.Brokers.DateTimes;
+using OtripleS.Web.Api.Brokers.Loggings;
+using OtripleS.Web.Api.Brokers.Storage;
+using OtripleS.Web.Api.Services.Courses;
 
 namespace OtripleS
 {
@@ -19,6 +24,13 @@ namespace OtripleS
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContext<StorageBroker>();
+            services.AddTransient<IStorageBroker, StorageBroker>();
+            services.AddTransient<ILoggingBroker, LoggingBroker>();
+            services.AddTransient<ILogger, Logger<LoggingBroker>>();
+            services.AddTransient<IDateTimeBroker, DateTimeBroker>();
+
+            services.AddTransient<ICourseService, CourseService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

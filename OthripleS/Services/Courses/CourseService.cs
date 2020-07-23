@@ -24,11 +24,13 @@ namespace OtripleS.Web.Api.Services.Courses
             this.dateTimeBroker = dateTimeBroker;
         }
 
-        public ValueTask<Course> CreateCourseAsync(Course course)
+        public async ValueTask<Course> CreateCourseAsync(Course course)
         {
-            return this.storageBroker.InsertCourseAsync(course);
+            ValidateCourseOnCreate(course);
 
+            return await this.storageBroker.InsertCourseAsync(course);
         }
+        //    =>
         //TryCatch(async () =>
         //{
         //    ValidateCourseOnCreate(course);
@@ -66,6 +68,7 @@ namespace OtripleS.Web.Api.Services.Courses
 
             return storageCourses;
         }
+        //    =>
         //TryCatch(() =>
         //{
         //    IQueryable<Course> storageCourses = this.storageBroker.SelectAllCourses();
@@ -81,10 +84,11 @@ namespace OtripleS.Web.Api.Services.Courses
 
             return storageCourse;
         }
+        //    =>
         //TryCatch(async () =>
         //{
         //    Course storageCourse = await this.storageBroker.SelectCourseByIdAsync(courseId);
-        //    ValidateStorageCourse(storageCourse, courseId);
+        //    await ValidateStorageCourse(storageCourse, courseId);
 
         //    return storageCourse;
         //});

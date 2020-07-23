@@ -7,6 +7,17 @@ namespace OtripleS.Web.Api.Services.Courses
 {
     public partial class CourseService
     {
+        private void ValidateCourseOnCreate(Course course)
+        {
+            ValidateCourse(course);
+            ValidateCourseId(course.Id);
+            ValidateCourseIds(course);
+            ValidateCourseStrings(course);
+            ValidateCourseDates(course);
+            ValidateCreatedSignature(course);
+            ValidateCreatedDateIsRecent(course);
+        }
+
         private void ValidateCourseOnModify(Course course)
         {
             ValidateCourse(course);
@@ -17,6 +28,15 @@ namespace OtripleS.Web.Api.Services.Courses
             ValidateDatesAreNotSame(course);
             ValidateUpdatedDateIsRecent(course);
         }
+
+        private void ValidateCourse(Course course)
+        {
+            if (course is null)
+            {
+                throw new NullCourseException();
+            }
+        }
+
         private void ValidateCourseId(Guid courseId)
         {
             if (courseId == Guid.Empty)
@@ -24,22 +44,6 @@ namespace OtripleS.Web.Api.Services.Courses
                 throw new InvalidCourseInputException(
                     parameterName: nameof(Course.Id),
                     parameterValue: courseId);
-            }
-        }
-
-        private void ValidateCourseStrings(Course course)
-        {
-            switch (course)
-            {
-                case { } when IsInvalid(course.Name):
-                    throw new InvalidCourseInputException(
-                        parameterName: nameof(Course.Name),
-                        parameterValue: course.Name);
-
-                case { } when IsInvalid(course.Description):
-                    throw new InvalidCourseInputException(
-                        parameterName: nameof(Course.Description),
-                        parameterValue: course.Description);
             }
         }
 
@@ -59,6 +63,22 @@ namespace OtripleS.Web.Api.Services.Courses
             }
         }
 
+        private void ValidateCourseStrings(Course course)
+        {
+            switch (course)
+            {
+                case { } when IsInvalid(course.Name):
+                    throw new InvalidCourseInputException(
+                        parameterName: nameof(Course.Name),
+                        parameterValue: course.Name);
+
+                case { } when IsInvalid(course.Description):
+                    throw new InvalidCourseInputException(
+                        parameterName: nameof(Course.Description),
+                        parameterValue: course.Description);
+            }
+        }
+
         private void ValidateCourseDates(Course course)
         {
             switch (course)
@@ -75,6 +95,31 @@ namespace OtripleS.Web.Api.Services.Courses
             }
         }
 
+        private void ValidateCreatedSignature(Course course)
+        {
+            if (course.CreatedBy != course.UpdatedBy)
+            {
+                throw new InvalidCourseInputException(
+                    parameterName: nameof(Course.UpdatedBy),
+                    parameterValue: course.UpdatedBy);
+            }
+            else if (course.CreatedDate != course.UpdatedDate)
+            {
+                throw new InvalidCourseInputException(
+                    parameterName: nameof(Course.UpdatedDate),
+                    parameterValue: course.UpdatedDate);
+            }
+        }
+        private void ValidateCreatedDateIsRecent(Course course)
+        {
+            if (IsDateNotRecent(course.CreatedDate))
+            {
+                throw new InvalidCourseInputException(
+                    parameterName: nameof(course.CreatedDate),
+                    parameterValue: course.CreatedDate);
+            }
+        }
+
         private void ValidateDatesAreNotSame(Course course)
         {
             if (course.CreatedDate == course.UpdatedDate)
@@ -83,15 +128,6 @@ namespace OtripleS.Web.Api.Services.Courses
                     parameterName: nameof(Course.UpdatedDate),
                     parameterValue: course.UpdatedDate);
             }
-        }
-
-        private bool IsDateNotRecent(DateTimeOffset dateTime)
-        {
-            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
-            int oneMinute = 1;
-            TimeSpan difference = now.Subtract(dateTime);
-
-            return Math.Abs(difference.TotalMinutes) > oneMinute;
         }
 
         private void ValidateUpdatedDateIsRecent(Course course)
@@ -104,7 +140,7 @@ namespace OtripleS.Web.Api.Services.Courses
             }
         }
 
-        private static void ValidateStorageCourse(Course storageCourse, Guid courseId)
+        private void ValidateStorageCourse(Course storageCourse, Guid courseId)
         {
             if (storageCourse == null)
             {
@@ -112,19 +148,20 @@ namespace OtripleS.Web.Api.Services.Courses
             }
         }
 
+        private bool IsDateNotRecent(DateTimeOffset dateTime)
+        {
+            DateTimeOffset now = this.dateTimeBroker.GetCurrentDateTime();
+            int oneMinute = 1;
+            TimeSpan difference = now.Subtract(dateTime);
+
+            return Math.Abs(difference.TotalMinutes) > oneMinute;
+        }
+
         private void ValidateStorageCourses(IQueryable<Course> storageCourses)
         {
             if (storageCourses.Count() == 0)
             {
                 this.loggingBroker.LogWarning("No courses found in storage.");
-            }
-        }
-
-        private void ValidateCourse(Course course)
-        {
-            if (course is null)
-            {
-                throw new NulCourseException();
             }
         }
 
@@ -150,7 +187,6 @@ namespace OtripleS.Web.Api.Services.Courses
         }
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
-        
         private static bool IsInvalid(Guid input) => input == default;
     }
 }

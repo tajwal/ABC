@@ -14,6 +14,14 @@ namespace OtripleS.Web.Api.Brokers.Storage
 {
     public partial class StorageBroker
     {
+        protected StorageBroker()
+        {
+        }
+
+        public StorageBroker(DbContextOptions options) : base(options)
+        {
+        }
+
         public DbSet<Student> Students { get; set; }
 
         public async ValueTask<Student> InsertStudentAsync(Student student)

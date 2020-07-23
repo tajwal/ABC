@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\Classrooms\ClassroomService.Validations.cs" />
     <Compile Remove="Services\Courses\CourseService.Exception.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Services\Classrooms\ClassroomService.Validations.cs" />
     <None Include="Services\Courses\CourseService.Exception.cs" />
   </ItemGroup>
 

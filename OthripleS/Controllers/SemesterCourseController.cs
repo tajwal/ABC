@@ -12,20 +12,75 @@ using Microsoft.AspNetCore.Mvc;
 using OtripleS.Web.Api.Models.SemesterCourses;
 using OtripleS.Web.Api.Models.SemesterCourses.Exceptions;
 using OtripleS.Web.Api.Services.SemesterCourses;
+using RESTFulSense.Controllers;
 
 namespace OtripleS.Web.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SemesterCourseController : ControllerBase
+    public class SemesterCourseController : RESTFulController
     {
         private readonly ISemesterCourseService semesterCourseService;
 
         public SemesterCourseController(ISemesterCourseService semesterCourseService) =>
             this.semesterCourseService = semesterCourseService;
-                
+
+        [HttpGet]
+        public ActionResult<IQueryable<SemesterCourse>> GetAllSemesterCourses()
+        {
+            try
+            {
+                IQueryable storageSemesterCourses =
+                    this.semesterCourseService.RetrieveAllSemesterCourses();
+
+                return Ok(storageSemesterCourses);
+            }
+            catch (SemesterCourseDependencyException semesterCourseDependencyException)
+            {
+                return Problem(semesterCourseDependencyException.Message);
+            }
+            catch (SemesterCourseServiceException semesterCourseServiceException)
+            {
+                return Problem(semesterCourseServiceException.Message);
+            }
+        }
+
+        [HttpGet("{semesterCourseId}")]
+        public async ValueTask<ActionResult<SemesterCourse>> GetSemesterCoruseByIdAsync(
+            Guid semesterCourseId)
+        {
+            try
+            {
+                SemesterCourse storageSemesterCourse =
+                    await this.semesterCourseService.RetrieveSemesterCourseById(semesterCourseId);
+
+                return Ok(storageSemesterCourse);
+            }
+            catch (SemesterCourseValidationException semesterCourseValidationException)
+                when (semesterCourseValidationException.InnerException is NotFoundSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (SemesterCourseValidationException semesterCourseValidationException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (SemesterCourseDependencyException semesterCourseDependencyException)
+            {
+                return Problem(semesterCourseDependencyException.Message);
+            }
+            catch (SemesterCourseServiceException semesterCourseServiceException)
+            {
+                return Problem(semesterCourseServiceException.Message);
+            }
+        }
+
         [HttpPost]
-        public async ValueTask<ActionResult<SemesterCourse>> PostAssignmentAsync(
+        public async ValueTask<ActionResult<SemesterCourse>> PostSemesterCourseAsync(
             SemesterCourse semesterCourse)
         {
             try
@@ -47,6 +102,84 @@ namespace OtripleS.Web.Api.Controllers
                 string innerMessage = GetInnerMessage(semesterCourseValidationException);
 
                 return BadRequest(innerMessage);
+            }
+            catch (SemesterCourseDependencyException semesterCourseDependencyException)
+            {
+                return Problem(semesterCourseDependencyException.Message);
+            }
+            catch (SemesterCourseServiceException semesterCourseServiceException)
+            {
+                return Problem(semesterCourseServiceException.Message);
+            }
+        }
+
+        [HttpDelete("{semesterCourseId}")]
+        public async ValueTask<ActionResult<SemesterCourse>> DeleteSemesterCourseAsync(Guid semesterCourseId)
+        {
+            try
+            {
+                SemesterCourse storageSemesterCourse =
+                    await this.semesterCourseService.DeleteSemesterCourseAsync(semesterCourseId);
+
+                return Ok(storageSemesterCourse);
+            }
+            catch (SemesterCourseValidationException semesterCourseValidationException)
+                when (semesterCourseValidationException.InnerException is NotFoundSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (SemesterCourseValidationException semesterCourseValidationException)
+            {
+                return BadRequest(semesterCourseValidationException.Message);
+            }
+            catch (SemesterCourseDependencyException semesterCourseDependencyException)
+                when (semesterCourseDependencyException.InnerException is LockedSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseDependencyException);
+
+                return Locked(innerMessage);
+            }
+            catch (SemesterCourseDependencyException semesterCourseDependencyException)
+            {
+                return Problem(semesterCourseDependencyException.Message);
+            }
+            catch (SemesterCourseServiceException semesterCourseServiceException)
+            {
+                return Problem(semesterCourseServiceException.Message);
+            }
+        }
+
+        [HttpPut]
+        public async ValueTask<ActionResult<SemesterCourse>> PutSemesterCourseAsync(SemesterCourse semesterCourse)
+        {
+            try
+            {
+                SemesterCourse registeredSemesterCourse =
+                    await this.semesterCourseService.ModifySemesterCourseAsync(semesterCourse);
+
+                return Ok(registeredSemesterCourse);
+            }
+            catch (SemesterCourseValidationException semesterCourseValidationException)
+                when (semesterCourseValidationException.InnerException is NotFoundSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseValidationException);
+
+                return NotFound(innerMessage);
+            }
+            catch (SemesterCourseValidationException semesterCourseValidationException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseValidationException);
+
+                return BadRequest(innerMessage);
+            }
+            catch (SemesterCourseDependencyException semesterCourseDependencyException)
+                when (semesterCourseDependencyException.InnerException is LockedSemesterCourseException)
+            {
+                string innerMessage = GetInnerMessage(semesterCourseDependencyException);
+
+                return Locked(innerMessage);
             }
             catch (SemesterCourseDependencyException semesterCourseDependencyException)
             {

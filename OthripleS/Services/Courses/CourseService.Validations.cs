@@ -110,6 +110,7 @@ namespace OtripleS.Web.Api.Services.Courses
                     parameterValue: course.UpdatedDate);
             }
         }
+        
         private void ValidateCreatedDateIsRecent(Course course)
         {
             if (IsDateNotRecent(course.CreatedDate))
@@ -187,6 +188,7 @@ namespace OtripleS.Web.Api.Services.Courses
         }
 
         private static bool IsInvalid(string input) => String.IsNullOrWhiteSpace(input);
+        
         private static bool IsInvalid(Guid input) => input == default;
     }
 }
